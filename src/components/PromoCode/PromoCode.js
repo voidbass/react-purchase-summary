@@ -11,18 +11,24 @@ import {
   FormControl
 } from 'react-bootstrap';
 
-export default class PromoCode extends Component {
+import { connect } from 'react-redux';
+import { handleChange } from '../../actions/promoCodeActions';
+
+class PromoCodeDiscount extends Component {
+  // we no longer need a constructor as the state will be managed in redux
+
   constructor(props, context) {
     super(props, context);
 
     this.state = {
-      open: false,
-      value: ''
+      open: false
     };
   }
 
   handleChange = e => {
-    this.setState({ value: e.target.value });
+    // the setState below will be sent to redux
+    // this.setState({ value: e.target.value });
+    this.props.handleChange(e);
   };
 
   render() {
@@ -47,7 +53,7 @@ export default class PromoCode extends Component {
                       <FormControl
                         type="text"
                         placeholder="Enter promo code"
-                        value={this.state.value}
+                        value={this.props.promoCode}
                         onChange={this.handleChange}
                       />
                     </FormGroup>{' '}
@@ -56,7 +62,7 @@ export default class PromoCode extends Component {
                       bsStyle="success"
                       className="btn-round"
                       // type="submit"
-                      onClick={() => console.log(this.state.value)}
+                      onClick={() => console.log(this.props.promoCode)}
                     >
                       Apply
                     </Button>
@@ -70,3 +76,9 @@ export default class PromoCode extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  promoCode: state.promoCode.value
+});
+
+export default connect(mapStateToProps, { handleChange })(PromoCodeDiscount);

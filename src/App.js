@@ -5,8 +5,13 @@ import PickupSavings from './components/PickupSavings/PickupSavings';
 import TaxesFees from './components/TaxesFees/TaxesFees';
 import EstimatedTotal from './components/EstimatedTotal/EstimatedTotal';
 import ItemDetails from './components/ItemDetails/ItemDetails';
-import PromoCode from './components/PromoCode/PromoCode';
+import PromoCodeDiscount from './components/PromoCode/PromoCode';
 import './App.css';
+
+// Import redux provider
+import { Provider } from 'react-redux';
+// Import store.js
+import store from './store';
 
 class App extends Component {
   constructor(props) {
@@ -34,18 +39,20 @@ class App extends Component {
 
   render() {
     return (
-      <div className="container">
-        <Grid className="purchase-card">
-          <SubTotal price={this.state.total.toFixed(2)} />
-          <PickupSavings price={this.state.pickupSavings} />
-          <TaxesFees taxes={this.state.taxes.toFixed(2)} />
-          <hr />
-          <EstimatedTotal price={this.state.estimatedTotal.toFixed(2)} />
-          <ItemDetails price={this.state.estimatedTotal.toFixed(2)} />
-          <hr />
-          <PromoCode />
-        </Grid>
-      </div>
+      <Provider store={store}>
+        <div className="container">
+          <Grid className="purchase-card">
+            <SubTotal price={this.state.total.toFixed(2)} />
+            <PickupSavings price={this.state.pickupSavings} />
+            <TaxesFees taxes={this.state.taxes.toFixed(2)} />
+            <hr />
+            <EstimatedTotal price={this.state.estimatedTotal.toFixed(2)} />
+            <ItemDetails price={this.state.estimatedTotal.toFixed(2)} />
+            <hr />
+            <PromoCodeDiscount />
+          </Grid>
+        </div>
+      </Provider>
     );
   }
 }
