@@ -9,20 +9,19 @@ import PromoCodeDiscount from './components/PromoCode/PromoCode';
 import './App.css';
 
 // Import redux provider
-import { Provider, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { handleChange } from './actions/promoCodeActions';
-// Import store.js
-import store from './store';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      total: 102.96,
+      total: 100.0,
       taxes: 0,
       pickupSavings: -3.85,
-      estimatedTotal: 0
+      estimatedTotal: 0,
+      disablePromoButton: false
     };
   }
 
@@ -40,28 +39,34 @@ class App extends Component {
 
   giveDiscountHandler = () => {
     if (this.props.promoCode === 'DISCOUNT') {
-      this.setState({ estimatedTotal: this.state.estimatedTotal * 0.9 });
+      this.setState(
+        { estimatedTotal: this.state.estimatedTotal * 0.9 },
+        function() {
+          this.setState({
+            disablePromoButton: true
+          });
+        }
+      );
     }
   };
 
   render() {
     return (
-      <Provider store={store}>
-        <div className="container">
-          <Grid className="purchase-card">
-            <SubTotal price={this.state.total.toFixed(2)} />
-            <PickupSavings price={this.state.pickupSavings} />
-            <TaxesFees taxes={this.state.taxes.toFixed(2)} />
-            <hr />
-            <EstimatedTotal price={this.state.estimatedTotal.toFixed(2)} />
-            <ItemDetails price={this.state.estimatedTotal.toFixed(2)} />
-            <hr />
-            <PromoCodeDiscount
-              giveDiscount={() => this.giveDiscountHandler()}
-            />
-          </Grid>
-        </div>
-      </Provider>
+      <div className="container">
+        <Grid className="purchase-card">
+          <SubTotal price={this.state.total.toFixed(2)} />
+          <PickupSavings price={this.state.pickupSavings} />
+          <TaxesFees taxes={this.state.taxes.toFixed(2)} />
+          <hr />
+          <EstimatedTotal price={this.state.estimatedTotal.toFixed(2)} />
+          <ItemDetails price={this.state.estimatedTotal.toFixed(2)} />
+          <hr />
+          <PromoCodeDiscount
+            giveDiscount={() => this.giveDiscountHandler()}
+            isDisabled={this.state.disablePromoButton}
+          />
+        </Grid>
+      </div>
     );
   }
 }
