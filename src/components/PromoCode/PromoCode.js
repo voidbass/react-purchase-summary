@@ -62,7 +62,7 @@ class PromoCodeDiscount extends Component {
                       bsStyle="success"
                       className="btn-round"
                       // type="submit"
-                      onClick={() => console.log(this.props.promoCode)}
+                      onClick={this.props.giveDiscount}
                     >
                       Apply
                     </Button>

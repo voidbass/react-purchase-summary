@@ -9,7 +9,8 @@ import PromoCodeDiscount from './components/PromoCode/PromoCode';
 import './App.css';
 
 // Import redux provider
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
+import { handleChange } from './actions/promoCodeActions';
 // Import store.js
 import store from './store';
 
@@ -37,6 +38,13 @@ class App extends Component {
     );
   };
 
+  giveDiscountHandler = () => {
+    if (this.props.promoCode === 'DISCOUNT') {
+      this.setState({ total: this.state.total * 0.9 });
+      alert(`You're getting a discount`);
+    }
+  };
+
   render() {
     return (
       <Provider store={store}>
@@ -49,7 +57,9 @@ class App extends Component {
             <EstimatedTotal price={this.state.estimatedTotal.toFixed(2)} />
             <ItemDetails price={this.state.estimatedTotal.toFixed(2)} />
             <hr />
-            <PromoCodeDiscount />
+            <PromoCodeDiscount
+              giveDiscount={() => this.giveDiscountHandler()}
+            />
           </Grid>
         </div>
       </Provider>
@@ -57,4 +67,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  promoCode: state.promoCode.value
+});
+
+export default connect(mapStateToProps, {
+  handleChange
+})(App);
