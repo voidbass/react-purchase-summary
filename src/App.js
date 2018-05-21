@@ -40,8 +40,7 @@ class App extends Component {
 
   giveDiscountHandler = () => {
     if (this.props.promoCode === 'DISCOUNT') {
-      this.setState({ total: this.state.total * 0.9 });
-      alert(`You're getting a discount`);
+      this.setState({ estimatedTotal: this.state.estimatedTotal * 0.9 });
     }
   };
 
